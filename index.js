@@ -1,7 +1,15 @@
-//JotaroKujo0525 note, this is a deed that i should've done a long time ago
 require('dotenv').config()
 
-global.ReadableStream = require('stream').Readable;
+// 修正 ReadableStream 不存在的問題
+try {
+  if (typeof ReadableStream === 'undefined' && typeof window === 'undefined') {
+    const { Readable } = require('stream');
+    global.ReadableStream = Readable;
+    console.log("已設定全局 ReadableStream");
+  }
+} catch (error) {
+  console.error("設定 ReadableStream 時出錯:", error);
+}
 
 const DiscordMusicBot = require("./lib/DiscordMusicBot");
 const { exec } = require("child_process");
